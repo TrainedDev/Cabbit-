@@ -4,6 +4,7 @@ const cors = require("cors");
 const { route: userRoutes } = require("./routes/userRoutes");
 const { sequelize } = require("./models");
 const cookieParser = require("cookie-parser");
+require('pg'); 
 
 const app = express();
 const PORT = process.env.PORT || 3001;

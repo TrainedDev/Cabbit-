@@ -4,6 +4,7 @@ const { route: rideRoute } = require("./routes/rideRoute");
 const { sequelize } = require("./models");
 const cookiesParser = require("cookie-parser");
 require("dotenv").config();
+require('pg'); 
 
 const app = express();
 const PORT = process.env.PORT || 3003;

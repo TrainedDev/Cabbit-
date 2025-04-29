@@ -6,7 +6,7 @@ const fs = require("fs");
 const { route: captainRoute } = require("./routes/captainRoute");
 const { sequelize } = require("./models")
 const cookiesParser = require("cookie-parser");
-
+require('pg'); 
 
 const app = express();
 const PORT = process.env.PORT || 3002;
