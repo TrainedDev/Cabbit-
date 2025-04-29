@@ -7,7 +7,7 @@ const route = Router();
 
 route.post("/register", register);
 route.post("/login", login);
-route.post("/github", githubLogin);
+route.get("/github", githubLogin);
 route.post("/github/callback", fetchGithubAccessToken);
 route.post("/google", googleLogin);
 route.post("/google/callback", fetchGoogleAccessToken);
