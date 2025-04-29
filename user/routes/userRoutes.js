@@ -9,7 +9,7 @@ route.post("/register", register);
 route.post("/login", login);
 route.get("/github", githubLogin);
 route.post("/github/callback", fetchGithubAccessToken);
-route.post("/google", googleLogin);
+route.get("/google", googleLogin);
 route.post("/google/callback", fetchGoogleAccessToken);
 route.get("/profile", auth, userProfile);
 route.get("/user/ride/status", auth, acceptedRide);

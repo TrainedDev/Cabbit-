@@ -24,7 +24,7 @@ route.post("/register", register);
 route.post("/login", login);
 // route.post("/github", githubLogin);
 // route.post("/github/callback", fetchGithubAccessToken);
-route.post("/google", googleLogin);
+route.get("/google", googleLogin);
 route.post("/google/callback", fetchGoogleAccessToken);
 route.post("/upload/verification/data", auth, uploadFile, verifyCaptain);
 route.get("/captain/profile", auth, fetchCaptainProfile);
