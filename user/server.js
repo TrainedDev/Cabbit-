@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const { route: userRoutes } = require("./routes/userRoutes");
@@ -5,7 +6,7 @@ const { sequelize } = require("./models");
 const cookieParser = require("cookie-parser");
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 
 app.use(cors({
     credentials: true,

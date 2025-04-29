@@ -109,7 +109,7 @@ const fetchGithubAccessToken = async (req, res) => {
 
 const googleLogin = async (req, res) => {
     try {
-        const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_url=${process.env.BACKEND_URL}/auth/google/calback&response_type=code&scope=profile email`;
+        const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.BACKEND_URL}/auth/google/callback&response_type=code&scope=profile email`;
 
         res.redirect(url);
     } catch (error) {
@@ -129,7 +129,7 @@ const fetchGoogleAccessToken = async (req, res) => {
                 client_secret: process.env.GOOGLE_CLIENT_SECRET,
                 code,
                 grant_type: "authorization_code",
-                redirect_url: process.env.BACKEND_URL,
+                redirect_url: `${process.env.BACKEND_URL}/auth/google/callback`
             },
 
             { headers: { "Content-Type": "application/x-www-form-urlencoded" } }

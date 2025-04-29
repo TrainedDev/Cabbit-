@@ -23,7 +23,7 @@ const storeOauthUser = async (access_token, provider) => {
             const { id } = fetchUser.data;
             const existUser = usersModel.findOne({ where: { oauth_id: id } });
 
-            if (existUser) return true;
+            if (existUser) return existUser;
 
             const { name, email } = fetchUser;
             const user = await usersModel.create({ username: name, email, oauth_id: id });
@@ -36,10 +36,10 @@ const storeOauthUser = async (access_token, provider) => {
                 headers: { Authorization: `Bearer ${access_token}` }
             });
 
-            const { sub } = fetchUser.data;
-            const existUser = usersModel.findOne({ where: { oauth_id: sub } });
+            const { id } = fetchUser.data;
+            const existUser = usersModel.findOne({ where: { oauth_id: id } });
 
-            if (existUser) return true;
+            if (existUser) return existUser;
 
             const { name, email } = fetchUser;
             const user = await usersModel.create({ username: name, email, oauth_id: id });
