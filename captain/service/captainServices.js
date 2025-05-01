@@ -14,6 +14,7 @@ const cloudinaryUpload = async (filePath) => {
 
             if (err) return console.log("failed to read folder");
 
+            console.log(files)
             files.forEach(file => {
 
                 const filePath = path.resolve(uploadDir, file)
