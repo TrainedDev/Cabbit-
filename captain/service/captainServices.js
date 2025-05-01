@@ -14,18 +14,19 @@ const cloudinaryUpload = async (filePath) => {
 
             if (err) return console.log("failed to read folder");
 
-            console.log(files)
+
             files.forEach(file => {
 
                 const filePath = path.resolve(uploadDir, file)
+                const fileExt = path.extname(filePath);
 
                 if (!filePath) return console.error("deleted file not found");
 
-                fs.unlink(filePath, err => {
-
-                    if (err) return console.error(err);
-
-                })
+                if (fileExt !== ".txt") {
+                    fs.unlink(filePath, err => {
+                        if (err) return console.error(err);
+                    })
+                }
             });
         });
 
