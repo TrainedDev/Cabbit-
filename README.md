@@ -1,105 +1,143 @@
-# 🚖 Cabbit – A Microservices-Based Ride Booking App
+# 🚖 Velora – Ride Booking Platform (Microservices Architecture)
 
-Cabbit is an Uber-like ride booking platform built using a microservices architecture. It consists of three primary services — **User**, **Ride**, and **Captain** — working together to deliver a seamless ride-hailing experience.
+**Velora** is a scalable ride-booking platform inspired by apps like Uber, built using a microservices architecture. It separates responsibilities into three independently deployed services:
 
----
+- 🧑‍💼 **User Service** – Handles user registration, login, OAuth, and ride tracking  
+- 👨‍✈️ **Captain Service** – Manages captain registration, availability, and ride assignments  
+- 🚗 **Ride Service** – Coordinates ride creation and status updates  
 
-## 🧩 Services Overview
-
-### 1. **User Service**
-Handles user registration, authentication (including Google OAuth), user profiles, and pickup/drop location data.
-
-- **Features:**
-  - Register/Login with email & password
-  - OAuth (Google)
-  - Profile management
-  - Location storage (pickup/drop)
-  - JWT-based authentication
+All services are live and ready to use — no local setup required.
 
 ---
 
-### 2. **Captain Service**
-Manages captains (drivers), their availability, status, and real-time location updates.
+## 🌐 Live Services
 
-- **Features:**
-  - Captain registration/login
-  - Set availability (online/offline)
-  - Location tracking
-  - Accept/reject ride requests
-
----
-
-### 3. **Ride Service**
-Coordinates the entire ride lifecycle — from booking and matching to ride completion and feedback.
-
-- **Features:**
-  - Ride creation and matching with captains
-  - Track ride progress
-  - Communication between user and captain
-  - Ride history and status updates
+| Service       | URL                                                                 |
+|---------------|----------------------------------------------------------------------|
+| 🧑‍💼 User      | [`https://velora-user-server.onrender.com`](https://velora-user-server.onrender.com)         |
+| 👨‍✈️ Captain   | [`https://velora-captain-server.onrender.com`](https://velora-captain-server.onrender.com)   |
+| 🚗 Ride       | [`https://velora-ride-server.onrender.com`](https://velora-ride-server.onrender.com)         |
 
 ---
 
-## 🛠️ Tech Stack
+## 🧑‍💼 User Service
 
-- **Backend:** Node.js, Express.js
-- **Database:** PostgreSQL
-- **Auth:** JWT, OAuth2 (Google)
-- **Communication:** REST API, Socket.IO
-- **Deployment:** Vercel / Render / Custom
+> Base URL: `/auth`  
+> Handles registration, login (including Google/GitHub), and ride status for users.
+
+### 🔐 Authentication
+
+| Method | Route                     | Description                            |
+|--------|---------------------------|----------------------------------------|
+| POST   | `/auth/register`          | Register a new user                    |
+| POST   | `/auth/login`             | Login and receive token in cookie      |
+| GET    | `/auth/github`            | Redirect to GitHub OAuth               |
+| POST   | `/auth/github/callback`   | GitHub OAuth callback                  |
+| GET    | `/auth/google`            | Redirect to Google OAuth               |
+| POST   | `/auth/google/callback`   | Google OAuth callback                  |
+
+### 👤 User Features
+
+| Method | Route                         | Description                            |
+|--------|-------------------------------|----------------------------------------|
+| GET    | `/auth/profile`               | Get the logged-in user’s profile       |
+| GET    | `/auth/user/ride/status`      | Check status of user's requested ride  |
 
 ---
 
-## 🚀 Getting Started
+## 👨‍✈️ Captain Service
 
-### Clone the repo
-```bash
-git clone https://github.com/TrainedDev/Cabbit-.git
-cd Cabbit-
+> Base URL: `/auth`  
+> Manages captain onboarding, verification, availability, and ride fetch.
 
-## Setup instructions per service
+### 🔐 Authentication
 
-Each service (/user, /ride, /captain) contains its own package.json and environment variables.
+| Method | Route                       | Description                            |
+|--------|-----------------------------|----------------------------------------|
+| POST   | `/auth/register`            | Register a new captain                 |
+| POST   | `/auth/login`               | Login captain and get cookie token     |
+| GET    | `/auth/google`              | Redirect to Google OAuth               |
+| POST   | `/auth/google/callback`     | Google OAuth callback                  |
 
-1.Go to a service folder:
-  cd user
+### 👨‍✈️ Captain Features
 
-2.Install dependencies:
-npm install
+| Method | Route                                | Description                              |
+|--------|--------------------------------------|------------------------------------------|
+| POST   | `/auth/upload/verification/data`     | Upload PAN & license for verification    |
+| GET    | `/auth/captain/profile`              | Fetch captain’s profile                  |
+| PATCH  | `/auth/captain/availability`         | Toggle captain’s availability            |
+| GET    | `/auth/fetch/ride`                   | Fetch available rides                    |
 
-3.Set up environment variables:
-Create a .env file using the provided .env.example (if available)
+---
 
-4:Run the service:
-npm start
+## 🚗 Ride Service
 
-Repeat for the other two services.
-    
-## Folder Structure
+> Base URL: `/ride`  
+> Connects users and captains through ride creation and assignment.
 
-/Cabbit-
-  ├── user/       # Handles user auth & profiles
-  ├── ride/       # Manages ride creation, matching & history
-  └── captain/    # Handles driver actions & availability
+| Method | Route                | Description                                |
+|--------|----------------------|--------------------------------------------|
+| POST   | `/ride/create`       | Create a new ride (user must be logged in) |
+| PATCH  | `/ride/status`       | Update ride status (captain accepts ride)  |
 
-## 🧪 Testing
+---
 
-Coming soon: Unit & integration tests using Jest and Postman collection.
+## 🔁 Full Request Flow
 
+1. **User** and **Captain** log in or register (or use OAuth).
+2. Tokens are securely stored in **HTTP-only cookies**.
+3. **Captain** polls `/auth/fetch/ride` to check for ride requests.
+4. **User** creates a ride via `/ride/create`.
+5. Within ~30 seconds, the ride appears for the captain to accept.
+6. Captain updates ride status using `/ride/status`.
 
-## 🧠 Future Plans
+---
 
-Real-time location tracking on frontend (MapBox/Google Maps)
+## 🔐 Authentication Notes
 
-Payment integration (Stripe/Razorpay)
+- Tokens are stored as **secure HTTP-only cookies**.
+- All protected routes require valid cookies for access.
+- ❌ There is **no logout endpoint** — cookies can be cleared manually.
 
-Notifications (SMS/email)
+---
 
-Admin panel for monitoring rides and users
-## 🙌 Contributing
+## 🚀 Technologies Used
 
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or suggestions.
-## License
+- **Node.js** + **Express.js**
+- **MongoDB** with **Mongoose**
+- **JWT** authentication via cookies
+- **OAuth2** (Google & GitHub)
+- **Multer** for file uploads (captain verification)
+- **Render** for hosting microservices
 
-[MIT](https://choosealicense.com/licenses/mit/)
+---
 
+## 📦 Project Structure
+
+```
+Velora/
+├── User Service (auth)
+├── Captain Service (auth)
+└── Ride Service (ride)
+```
+
+Each service has its own database and handles only its domain logic.
+
+---
+
+## 🤝 Contributing
+
+Have a feature idea or found a bug?  
+Fork the repo → Create a branch → Commit your changes → Open a pull request ✅
+
+GitHub: [TrainedDev/Velora](https://github.com/TrainedDev/Velora)
+
+---
+
+## 🪪 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## ✨ Created by [TrainedDev](https://github.com/TrainedDev)
