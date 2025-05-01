@@ -1,4 +1,4 @@
-# 🚖 Velora – Ride Booking Platform (Microservices Architecture)
+# 🚖 Velora – Ride Booking Platform (Microservices Architecture) 
 
 **Velora** is a scalable ride-booking platform inspired by apps like Uber, built using a microservices architecture. It separates responsibilities into three independently deployed services:
 
