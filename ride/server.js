@@ -7,7 +7,7 @@ require("dotenv").config();
 require('pg'); 
 
 const app = express();
-const PORT = process.env.PORT || 3003;
+// const PORT = process.env.PORT || 3003;
 
 app.use(cors({
     credentials: true,
@@ -21,4 +21,8 @@ app.get("/", (req, res) => res.send("server is live"));
 
 sequelize.authenticate().then(() => console.log("successfully connected to the database")).catch((error) => console.log("failed to connect database", error));
 
-app.listen(PORT, () => console.log("server is ready", PORT));
+const PORT = process.env.PORT || 10000; 
+
+app.listen(PORT, "0.0.0.0", () => {    
+  console.log(`Server running on port ${PORT}`);
+});

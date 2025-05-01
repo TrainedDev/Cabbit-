@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser");
 require('pg'); 
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+// const PORT = process.env.PORT || 3001;
 
 app.use(cors({
     credentials: true,
@@ -23,4 +23,8 @@ app.use("/auth", userRoutes);
 
 sequelize.authenticate().then(() => console.log("Successfully connected to database")).catch(error => console.log("failed to connect database:", error))
 
-app.listen(PORT, () => console.log(`server is ready, running at ${PORT}`));
+const PORT = process.env.PORT || 10000; 
+
+app.listen(PORT, "0.0.0.0", () => {    
+  console.log(`Server running on port ${PORT}`);
+});
