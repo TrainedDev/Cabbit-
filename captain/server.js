@@ -19,13 +19,13 @@ app.use(cookiesParser());
 app.use(express.json());
 app.use(express.urlencoded({ limit: "100mb", extended: true }));
 
-const uploadDir = path.resolve(__dirname, "uploads");
+// const uploadDir = path.resolve(__dirname, "uploads");
 
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdir(uploadDir, err => {
-        if (err) return console.log(err);
-    });
-};
+// if (!fs.existsSync(uploadDir)) {
+//     fs.mkdir(uploadDir, err => {
+//         if (err) return console.log(err);
+//     });
+// };
 
 app.get("/", (req, res) => res.send("server is live"));
 
